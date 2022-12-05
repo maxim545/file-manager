@@ -8,6 +8,7 @@ import { cp } from './files/cp.js';
 import { mv } from './files/mv.js';
 import { rm } from './files/rm.js';
 import { osHandler } from './os/os.js';
+import { calculateHash } from './hash/hash.js';
 
 export const commands = {
     'up': up,
@@ -19,5 +20,6 @@ export const commands = {
     'cp': cp,
     'mv': mv,
     'rm': rm,
-    'os': osHandler
+    'os': osHandler,
+    'hash': calculateHash,
 }

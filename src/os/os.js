@@ -34,9 +34,7 @@ class OsOperations {
     }
 }
 
-
 const operation = new OsOperations();
-
 
 const osCommands = {
     '--EOL': operation.getEOL,
