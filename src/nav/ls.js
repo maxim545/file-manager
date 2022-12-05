@@ -19,6 +19,6 @@ export const ls = async () => {
                 console.log(`${i} - ${item.name} - ${item.type}`);
             })
     } catch (error) {
-
+        process.stdout.write('Operation failed\n')
     }
 }

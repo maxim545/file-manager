@@ -1,9 +1,11 @@
 import { commands } from './accessCommands.js'
 
 export const handleData = (data) => {
-    const [command, params] = data.split(' ')
+    const dataArr = data.split(' ');
+    const [command] = dataArr;
+    dataArr.splice(0, 1);
     if (command in commands) {
-        commands[command].call(this, params)
+        commands[command].call(this, dataArr.join(' '));
     } else {
         process.stdout.write('Invalid input\n')
     }
