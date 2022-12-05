@@ -7,6 +7,7 @@ import { rn } from './files/rn.js';
 import { cp } from './files/cp.js';
 import { mv } from './files/mv.js';
 import { rm } from './files/rm.js';
+import { osHandler } from './os/os.js';
 
 export const commands = {
     'up': up,
@@ -18,4 +19,5 @@ export const commands = {
     'cp': cp,
     'mv': mv,
     'rm': rm,
+    'os': osHandler
 }
