@@ -5,6 +5,7 @@ import fs from 'fs';
 export const ls = async () => {
     try {
         const currentDir = process.cwd();
+        const dataArr = [];
         const data = (await fs.promises
             .readdir(currentDir, { withFileTypes: true }))
             .map(item => {
@@ -16,8 +17,9 @@ export const ls = async () => {
             })
             .sort((a, b) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name))
             .forEach((item, i) => {
-                console.log(`${i} - ${item.name} - ${item.type}`);
+                dataArr.push({ name: item.name, type: item.type })
             })
+        console.table(dataArr);
     } catch (error) {
         process.stdout.write('Operation failed\n')
     }

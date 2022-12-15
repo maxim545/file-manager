@@ -9,6 +9,8 @@ import { mv } from './files/mv.js';
 import { rm } from './files/rm.js';
 import { osHandler } from './os/os.js';
 import { calculateHash } from './hash/hash.js';
+import { compress } from './zip/compress.js';
+import { decompress } from './zip/decompress.js';
 
 export const commands = {
     'up': up,
@@ -22,4 +24,6 @@ export const commands = {
     'rm': rm,
     'os': osHandler,
     'hash': calculateHash,
+    'compress': compress,
+    'decompress': decompress,
 }
