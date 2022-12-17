@@ -1,9 +1,10 @@
 import path from 'path';
 import fs from 'fs';
+import { showCurrentDir, showErrorMessage, showFailedMessage } from '../info/info.js'
 
 export const rn = async (params) => {
     try {
-        const [pathToFile, fileName] = params.split(' ');
+        const [pathToFile, fileName] = params;
         if (pathToFile && fileName) {
             const relativePath = path.relative(process.cwd(), pathToFile);
             const pathToNewFile = path.join(path.dirname(relativePath), fileName);
@@ -12,10 +13,11 @@ export const rn = async (params) => {
                 throw new Error()
             }
             fs.promises.rename(relativePath, pathToNewFile)
+            showCurrentDir()
         } else {
-            process.stdout.write('Invalid input\n')
+            showErrorMessage()
         }
     } catch (error) {
-        process.stdout.write('Operation failed\n')
+        showFailedMessage()
     }
 }

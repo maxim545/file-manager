@@ -1,14 +1,15 @@
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
-
+import { showCurrentDir, showErrorMessage, showFailedMessage } from '../info/info.js'
 
 class OsOperations {
     constructor() {
     }
 
     getEOL() {
-        return process.stdout.write(JSON.stringify(os.EOL) + '\n')
+        process.stdout.write(JSON.stringify(os.EOL) + '\n')
+        showCurrentDir()
     }
 
     getCpus() {
@@ -19,18 +20,22 @@ class OsOperations {
             const speed = (item.speed / 1000).toFixed(2);
             console.log(`Model: ${item.model}\nClock Rate: ${speed}GHz`)
         })
+        showCurrentDir()
     }
 
     gethHomedir() {
-        return process.stdout.write(os.homedir + '\n')
+        process.stdout.write(os.homedir + '\n')
+        showCurrentDir()
     }
 
     getUsername() {
-        return process.stdout.write(os.userInfo().username + '\n')
+        process.stdout.write(os.userInfo().username + '\n')
+        showCurrentDir()
     }
 
     getArchitecture() {
-        return process.stdout.write(os.arch() + '\n')
+        process.stdout.write(os.arch() + '\n')
+        showCurrentDir()
     }
 }
 
@@ -49,10 +54,10 @@ export const osHandler = async (operationName) => {
         if (operationName in osCommands) {
             osCommands[operationName].call(this);
         } else {
-            process.stdout.write('Invalid input\n')
+            showErrorMessage()
         }
     } catch (error) {
-        process.stdout.write('Operation failed\n')
+        showFailedMessage()
     }
 }
 

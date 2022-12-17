@@ -1,14 +1,15 @@
 import path from 'path';
+import { showCurrentDir, showErrorMessage, showFailedMessage } from '../info/info.js'
 
 export const up = (currentPath) => {
     try {
         if (currentPath) {
-            process.stdout.write('Invalid input\n')
+            showErrorMessage()
         } else {
             process.chdir(path.join(process.cwd(), '..'))
-            process.stdout.write(process.cwd() + '\n')
+            showCurrentDir()
         }
     } catch (error) {
-        process.stdout.write('Operation failed\n')
+        showFailedMessage()
     }
 }

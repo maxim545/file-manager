@@ -1,18 +1,20 @@
 import path from 'path';
 import fs from 'fs';
+import { showCurrentDir, showErrorMessage, showFailedMessage } from '../info/info.js'
 
 export const cat = async (pathToFile) => {
     try {
-        const relativePath = path.relative(process.cwd(), pathToFile);
+        const relativePath = path.relative(process.cwd(), ...pathToFile);
         const stat = await fs.promises.lstat(relativePath);
         if (!stat.isFile()) {
             throw new Error()
         }
         const readStream = fs.createReadStream(relativePath, 'utf-8');
-        let str = '';
-        readStream.on('data', chunk => str += chunk);
-        readStream.on('end', () => process.stdout.write(str));
+        readStream.on('data', data => {
+            process.stdout.write(data.toString() + '\n');
+        });
+        readStream.on('end', () => showCurrentDir());
     } catch (error) {
-        process.stdout.write('Operation failed\n')
+        showFailedMessage()
     }
 }

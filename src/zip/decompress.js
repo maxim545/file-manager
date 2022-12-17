@@ -1,10 +1,12 @@
 import path from 'path';
 import fs from 'fs';
 import zlib from 'zlib';
+import { pipeline } from 'node:stream/promises';
+import { showCurrentDir, showErrorMessage, showFailedMessage } from '../info/info.js'
 
 export const decompress = async (params) => {
     try {
-        const [pathToFile, pathToNewDir] = params.split(' ');
+        const [pathToFile, pathToNewDir] = params;
         if (pathToFile && pathToNewDir) {
             const relativePathToFile = path.relative(process.cwd(), pathToFile);
             const relativePathToDir = path.relative(process.cwd(), pathToNewDir);
@@ -17,12 +19,13 @@ export const decompress = async (params) => {
             const readStream = fs.createReadStream(relativePathToFile);
             const writeStream = fs.createWriteStream(path.join(relativePathToDir, fileName));
 
-            const decompressFile = zlib.createBrotliDecompress().error(() => { throw new Error() });
-            readStream.pipe(decompressFile).pipe(writeStream);
+            const decompressFile = zlib.createBrotliDecompress()
+            await pipeline(readStream, decompressFile, writeStream);
+            showCurrentDir()
         } else {
-            process.stdout.write('Invalid input\n')
+            showErrorMessage()
         }
     } catch (error) {
-        process.stdout.write('Operation failed\n')
+        showFailedMessage()
     }
 }

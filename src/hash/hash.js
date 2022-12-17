@@ -1,10 +1,11 @@
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
+import { showCurrentDir, showErrorMessage, showFailedMessage } from '../info/info.js'
 
 export const calculateHash = async (pathToFile) => {
     try {
-        const relativePath = path.relative(process.cwd(), pathToFile);
+        const relativePath = path.relative(process.cwd(), ...pathToFile);
         const stat = await fs.promises.lstat(relativePath);
         if (!stat.isFile()) {
             throw new Error()
@@ -14,9 +15,10 @@ export const calculateHash = async (pathToFile) => {
         readStream.on('data', chunk => str += chunk);
         readStream.on('end', () => {
             const hash = crypto.createHash('sha256').update(str).digest('hex');
-            return process.stdout.write(hash + '\n');
+            process.stdout.write(hash + '\n');
+            showCurrentDir()
         });
     } catch (error) {
-        process.stdout.write('Operation failed\n')
+        showFailedMessage()
     }
 }

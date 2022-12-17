@@ -1,9 +1,10 @@
 import path from 'path';
 import fs from 'fs';
+import { showCurrentDir, showErrorMessage, showFailedMessage } from '../info/info.js'
 
 export const cp = async (params) => {
     try {
-        const [pathToFile, pathToNewDir] = params.split(' ');
+        const [pathToFile, pathToNewDir] = params;
         if (pathToFile && pathToNewDir) {
             const relativePathToFile = path.relative(process.cwd(), pathToFile);
             const relativePathToDir = path.relative(process.cwd(), pathToNewDir);
@@ -15,13 +16,14 @@ export const cp = async (params) => {
             }
             const readStream = fs.createReadStream(relativePathToFile, 'utf-8');
             const writeStream = fs.createWriteStream(path.join(relativePathToDir, fileName), 'utf-8');
-            let str = '';
-            readStream.on('data', chunk => str += chunk);
-            readStream.on('end', () => writeStream.write(str));
+            await new Promise(async () => {
+                readStream.pipe(writeStream);
+                readStream.on('end', () => showCurrentDir());
+            })
         } else {
-            process.stdout.write('Invalid input\n')
+            showErrorMessage()
         }
     } catch (error) {
-        process.stdout.write('Operation failed\n')
+        showFailedMessage()
     }
 }

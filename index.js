@@ -6,7 +6,7 @@ const start = () => {
     process.on('SIGINT', () => { takeLeaveUser(userName) });
     process.stdin.on('data', async (data) => {
         const prsData = data.toString().trim();
-        if (prsData === 'exit') {
+        if (prsData === '.exit') {
             takeLeaveUser(userName)
         } else {
             handleData(prsData)
@@ -14,6 +14,5 @@ const start = () => {
     })
 
 };
-
 
 start();
